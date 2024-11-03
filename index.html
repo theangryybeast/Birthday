@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday</title>
+  <link rel="stylesheet" href="/dist/style.css">
+  <style>
+    /* Set background image */
+    body {
+      background-image: url('/Birthday/lily.jpg');
+      background-size: cover; /* Cover the entire background */
+      background-position: center; /* Center the background image */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden; /* Prevent overflow */
+      color: #333; /* Default text color for light theme */
+      position: relative; /* To position end message absolutely */
+    }
+
+    /* Love letter icon at the center */
+    .love-letter-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      width: 150px;
+      height: auto;
+      transition: opacity 0.5s ease;
+      z-index: 10; /* Ensure icon is above background */
+    }
+
+    /* Container for the letters */
+    .letter-stack {
+      position: relative;
+      display: none; /* Initially hidden */
+      z-index: 5; /* Ensure letters are above the background */
+      width: 90%; /* Responsive width */
+      max-width: 600px; /* Max width for larger screens */
+      margin: 0 auto; /* Center align */
+    }
+
+    /* Styling for each letter */
+    .letter {
+      position: relative;
+      display: flex;
+      background-color: #d3d3d3; /* Light silver color for the card background */
+      border: 1px solid #aaa;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow for depth */
+      margin: 20px 0; /* Space between cards */
+      overflow: hidden; /* Ensure content fits within border */
+      transition: opacity 0.5s ease; /* Transition for opacity */
+    }
+
+    /* Image inside each letter */
+    .letter img {
+      width: 100px;
+      height: 100px;
+      border-radius: 8px 0 0 8px; /* Rounded corners on the left side */
+    }
+
+    /* Text section styling */
+    .text-section {
+      padding: 20px;
+      flex: 1; /* Allow text section to grow */
+      background: repeating-linear-gradient(
+        45deg,
+        #ffffff,
+        #ffffff 10px,
+        #f0f0f0 10px,
+        #f0f0f0 20px
+      ); /* Ruled notebook style background */
+      border-left: 2px solid #aaa; /* Rule between image and text */
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Center text vertically */
+      text-align: left; /* Align text to the left */
+    }
+
+    /* Text styling */
+    .letter h2 {
+      font-size: 18px;
+      color: #333; /* Text color */
+      margin: 0 0 5px; /* Spacing between elements */
+    }
+
+    .letter p {
+      font-size: 14px;
+      color: #666; /* Description color */
+      margin: 0; /* Remove default margin */
+    }
+
+    /* Twinkle animation */
+    @keyframes twinkle {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.1); }
+      100% { opacity: 0; transform: scale(0.9); }
+    }
+
+    .twinkle {
+      animation: twinkle 0.7s forwards;
+    }
+
+    /* Styling for the message */
+    .end-message {
+      display: none; /* Initially hidden */
+      font-size: 24px;
+      color: #333; /* Text color */
+      text-align: center;
+      position: absolute; /* To center the message on the page */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* Center the message */
+      background-color: rgba(255, 255, 255, 0.9); /* White background with transparency */
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    }
+  </style>
+</head>
+<body>
+
+<!-- Love letter icon -->
+<img src="https://cdn-icons-png.flaticon.com/512/4038/4038669.png" class="love-letter-icon" id="loveLetterIcon" alt="Love Letter Icon">
+
+<!-- Letter stack container -->
+<div class="letter-stack">
+  <div class="letter" style="z-index: 4;">
+    <img src="https://images.pexels.com/photos/29175346/pexels-photo-29175346.jpeg" alt="Solitary Sailboat">
+    <div class="text-section">
+      <h2>Letter Title 1</h2>
+      <p>Some description or message on the letter.</p>
+    </div>
+  </div>
+  
+  <div class="letter" style="z-index: 3; display: none;">
+    <img src="https://images.pexels.com/photos/29186806/pexels-photo-29186806.jpeg" alt="Minimalist Black and White Wall Art">
+    <div class="text-section">
+      <h2>Letter Title 2</h2>
+      <p>Another description or message here.</p>
+    </div>
+  </div>
+  
+  <div class="letter" style="z-index: 2; display: none;">
+    <img src="https://images.pexels.com/photos/29180064/pexels-photo-29180064.jpeg" alt="Tree Silhouette">
+    <div class="text-section">
+      <h2>Letter Title 3</h2>
+      <p>A different message on this letter.</p>
+    </div>
+  </div>
+
+  <div class="letter" style="z-index: 1; display: none;">
+    <img src="https://images.pexels.com/photos/15894618/pexels-photo-15894618.jpeg" alt="Rocky Mountain and Dry Field">
+    <div class="text-section">
+      <h2>Letter Title 4</h2>
+      <p>One more message on this letter.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Message to display at the end -->
+<div class="end-message" id="endMessage">Hope you liked it ❤️</div>
+
+<!-- Audio for the twinkle sound -->
+<audio id="starSound" src="star-sound.mp3"></audio>
+
+<script>
+  // Select elements
+  const loveLetterIcon = document.getElementById('loveLetterIcon');
+  const letterStack = document.querySelector('.letter-stack');
+  const letters = document.querySelectorAll('.letter');
+  const endMessage = document.getElementById('endMessage');
+  const starSound = document.getElementById('starSound');
+  
+  let currentCardIndex = 0;
+
+  // Show first card on love letter icon click
+  loveLetterIcon.addEventListener('click', () => {
+    loveLetterIcon.style.display = 'none'; // Hide love letter icon
+    letterStack.style.display = 'block'; // Show letters stack
+    letters[currentCardIndex].style.display = 'flex'; // Show the first letter
+  });
+
+  // Function to show the next card with twinkle effect
+  function showNextCard() {
+    if (currentCardIndex < letters.length - 1) {
+      letters[currentCardIndex].classList.add('twinkle');
+      starSound.play();
+
+      // Wait for the twinkle animation to finish
+      setTimeout(() => {
+        letters[currentCardIndex].style.display = 'none';
+        currentCardIndex++;
+        letters[currentCardIndex].style.display = 'flex';
+      }, 700); // Matches animation duration
+    } else {
+      // Show end message after the last card
+      letters[currentCardIndex].classList.add('twinkle');
+      starSound.play();
+      setTimeout(() => {
+        letters[currentCardIndex].style.display = 'none';
+        endMessage.style.display = 'block'; // Show the end message
+      }, 700); // Matches animation duration
+    }
+  }
+
+  // Add click event to each card to trigger the effect
+  letters.forEach((letter, index) => {
+    letter.addEventListener('click', () => {
+      if (index === currentCardIndex) {
+        showNextCard();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
