@@ -81,7 +81,7 @@
       // Show first card on love letter icon click
   loveLetterIcon.addEventListener('click', () => {
         loveLetterIcon.style.display = 'none'; // Hide love letter icon
-        document.getElementById('birthdayHeading').innerText = 'KEEP CLICKING BELOW !!'; // Change the heading text
+        document.getElementById('birthdayHeading').style.display='none'  // Change the heading text
         letterStack.classList.remove('hidden'); // Show letters stack
         letters[currentCardIndex].classList.remove('hidden'); // Show the first letter
         playCurrentAudio(); // Play audio for the first letter
